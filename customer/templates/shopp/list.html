@@ -2,8 +2,13 @@
 
 {% block content %}
 
-
-
+<h1>{% trans 'SHOP' %}</h1>
+{% for shop in object_list %}
+{% csrf_token %}
+<li>{{ shop.title }} <a href="{% url 'update' shop.id %}">edit</a></li>
+{% empty %}
+<li>{% trans 'there is no title' %}</li>
+{% endfor %}
 
 
 {% endblock %}

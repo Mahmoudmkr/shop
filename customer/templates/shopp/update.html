@@ -1,0 +1,13 @@
+{% load i18n %}
+{% block content %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        {{ form }}
+
+
+        <input type="submit" value="submit">
+    </form>
+<a href="{% url 'delete' object.id %}">delete</a>
+{% endblock %}
