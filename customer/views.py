@@ -28,3 +28,27 @@ class ShopDeleteView(DeleteView):
     model=models.Shop
     template_name = 'shopp/delete.html'
     success_url = reverse_lazy('shopp_list')
+
+
+class TaskCreateView(CreateView):
+    model=models.Task
+    fields=['description','shop']
+    http_method_names = ['post']
+
+    def get_success_url(self):
+        return reverse('update', args=[self.object.shop.id])
+
+class TaskUpdateView(UpdateView):
+    model=models.Task
+    fields=['is_completed']
+    http_method_names = ['post']
+
+    def get_success_url(self):
+        return reverse('update', args=[self.object.shop.id])
+
+class TaskDeleteView(DeleteView):
+    model=models.Task
+
+    def get_success_url(self):
+        return reverse('update', args=[self.object.shop.id])
+

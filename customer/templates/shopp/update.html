@@ -10,4 +10,5 @@
         <input type="submit" value="submit">
     </form>
 <a href="{% url 'delete' object.id %}">delete</a>
+{% include 'shopp/task.html' with shop=object %}
 {% endblock %}

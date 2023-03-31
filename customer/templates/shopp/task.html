@@ -1,0 +1,48 @@
+{% load i18n %}
+
+<ul>
+    {% for task in shop.task_set.all %}
+    <li>
+        <form method="post" action="{% url 'task_update' task.id %}">
+            {% csrf_token %}
+            <input
+                    type="checkbox",
+                    name="is_completed",
+                    {% if task.is_completed %} checked {% endif %}
+                    anchange="this.form.submit"
+            >
+            {{ task.description }}
+
+
+        </form>
+
+    <form method="post" action="{% url 'task_delete' task.id %}">
+
+        {% csrf_token %}
+           <button type="submit">delete</button>
+
+
+    </form>
+   </li>
+
+
+    {% endfor %}
+
+
+</ul>
+
+
+
+
+
+
+
+<form method="post" action="{% url 'task_create' %}">
+    {% csrf_token %}
+
+    <input type="hidden" value="{{ shop.id }}" name="shop">
+    <input type="text" placeholder="{% trans 'new task' %}" name="description">
+    <input type="submit" value="{% trans 'Add' %}">
+
+
+</form>
