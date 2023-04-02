@@ -1,0 +1,27 @@
+{% load i18n %}
+<nav class="navbar navbar-expand-lg navbar-light bg-primary bg-gardiant p-3">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'shopp_list' %}"><span class="text-warning">Home</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'shopp_list' %}"><span class="text-warning">list</span></a>
+        </li>
+      </ul>
+      <form class="d-flex" method="GET" action="{% url 'shopp_list' %}">
+        <div class="input-group">
+          <input class="form-control"
+                 type="text"
+                 placeholder="{% trans 'Search' %}"
+                 name="q"
+                 value="{{ request.GET.q }}"
+          >
+          <button class="btn btn-outline-danger" type="submit"><i class="bi bi-search"></i></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>

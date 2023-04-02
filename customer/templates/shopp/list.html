@@ -1,14 +1,100 @@
+{% extends 'base.html' %}
 {% load i18n %}
-
-{% block content %}
-
-<h1>{% trans 'SHOP' %}</h1>
-{% for shop in object_list %}
-{% csrf_token %}
-<li>{{ shop.title }} <a href="{% url 'update' shop.id %}">edit</a></li>
-{% empty %}
-<li>{% trans 'there is no title' %}</li>
-{% endfor %}
+{% load humanize %}
 
 
-{% endblock %}
+ {% block content %}
+
+    <div class="d-flex">
+                <h3 class="me-auto">{% trans 'SHOP' %}</h3>
+            <div>
+                    <a href="{% url 'create' %}" class="btn btn-outline-success">
+                        <i class="bi bi-plus-lg"></i> {% trans 'new project' %}
+                    </a>
+            </div>
+    </div>
+
+    <div class="row my-5">
+            {% for shop in object_list %}
+                 <div class="col-md-4">
+                     <div class="card mb-3">
+                         <div class="card-body">
+                             <p>
+                                 <span class="badge rounded-pill bg-dark">
+                                     {{ shop.get_status_display }}
+                                 </span>
+                             </p>
+                             <h3 class="card-title fs-6">{{ shop.title }}</h3>
+                             <p class="card-text text-muted small">{{shop.description}}</p>
+                             <div class="d-flex">
+                                     <span class="me-auto text-muted small">
+                                         <i class="bi bi-clock"></i>
+                                         <time datetime="{{ shop.created_at }}">
+                                             {{ shop.created_at|naturaltime }}
+                                         </time>
+                                     </span>
+
+                                     <a href="{% url 'update' shop.id %}"  class="btn btn-sm btn-outline-dark mx-1">
+                                         {% trans 'Edit' %}
+                                     </a>
+                                     <a href="{% url 'delete' shop.id %}"  class="btn btn-sm btn-outline-danger mx-1">
+                                            <i class="bi bi-trash"></i>
+                                         </a>
+
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+            {% empty %}
+                   <div class="col-md-12">
+                        <div class="h-100 p-5 bg-white border rounded-3 text-center">
+                            <p>{% trans 'there are no projects to show' %}</p>
+                             <p>
+                                <i class="bi bi-emoji-frown fs-1"></i>
+                             </p>
+
+                            <a href="{% url 'create' %}" class="btn btn-success">
+                                <i class="bi bi-plus-lg"></i> {% trans 'new project' %}
+                            </a>
+                        </div>
+                   </div>
+            {% endfor %}
+            {% if page_obj.paginator.count > 0 %}
+               <div class="d-flex justify-content-center bd-hightlight mb-3">
+                   <nav>
+                       <ul class="pagination">
+                           {% if page_obj.has_previous %}
+                           <li class="page-items">
+                               <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                                   {% trans 'Previous' %}
+                               </a>
+                           </li>
+                           {% else %}
+                           <li class="page-items disabled">
+                               <a class="page-link" href="#">
+                                   {% trans 'Previous' %}
+                               </a>
+                           </li>
+                           {% endif %}
+                           {% if page_obj.has_next %}
+                           <li class="page-items">
+                               <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                                   {% trans 'next' %}
+                               </a>
+                           </li>
+                           {% else %}
+                           <li class="page-items disabled">
+                               <a class="page-link" href="#">
+                                   {% trans 'next' %}
+                               </a>
+                           </li>
+                           {% endif %}
+                       </ul>
+
+                   </nav>
+               </div>
+            {% endif %}
+
+    </div>
+
+ {% endblock %}
