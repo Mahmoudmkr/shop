@@ -2,10 +2,10 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import  ListView, CreateView, UpdateView, DeleteView
 from . import models
 from . import forms
-# Create your views here.
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class ShopListView(ListView):
+class ShopListView(LoginRequiredMixin,ListView):
     model = models.Shop
     template_name = 'shopp/list.html'
     paginate_by = 3
@@ -17,13 +17,13 @@ class ShopListView(ListView):
             where['title__icontains']=q
         return query_set.filter(**where)
 
-class ShopCreateView(CreateView):
+class ShopCreateView(LoginRequiredMixin,CreateView):
     model=models.Shop
     form_class = forms.ShopCreateForm
     template_name = 'shopp/create.html'
     success_url = reverse_lazy('shopp_list')
 
-class ShopUpdateView(UpdateView):
+class ShopUpdateView(LoginRequiredMixin,UpdateView):
     model=models.Shop
     form_class = forms.ShopUpdateForm
     template_name = 'shopp/update.html'
@@ -32,13 +32,13 @@ class ShopUpdateView(UpdateView):
    # def get_success_url(self):
     #    return reverse ('update',args=[self.object.id])
 
-class ShopDeleteView(DeleteView):
+class ShopDeleteView(LoginRequiredMixin,DeleteView):
     model=models.Shop
     template_name = 'shopp/delete.html'
     success_url = reverse_lazy('shopp_list')
 
 
-class TaskCreateView(CreateView):
+class TaskCreateView(LoginRequiredMixin,CreateView):
     model=models.Task
     fields=['description','shop']
     http_method_names = ['post']
@@ -46,7 +46,7 @@ class TaskCreateView(CreateView):
     def get_success_url(self):
         return reverse('update', args=[self.object.shop.id])
 
-class TaskUpdateView(UpdateView):
+class TaskUpdateView(LoginRequiredMixin,UpdateView):
     model=models.Task
     fields=['is_completed']
     http_method_names = ['post']
@@ -54,7 +54,7 @@ class TaskUpdateView(UpdateView):
     def get_success_url(self):
         return reverse('update', args=[self.object.shop.id])
 
-class TaskDeleteView(DeleteView):
+class TaskDeleteView(LoginRequiredMixin,DeleteView):
     model=models.Task
 
     def get_success_url(self):

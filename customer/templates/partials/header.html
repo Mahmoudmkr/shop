@@ -1,5 +1,5 @@
 {% load i18n %}
-<nav class="navbar navbar-expand-lg navbar-light bg-primary bg-gardiant p-3">
+<nav class="navbar navbar-expand-lg navbar-light bg-success bg-gardiant p-3">
   <div class="container-fluid">
     <a class="navbar-brand" href="{% url 'shopp_list' %}"><span class="text-warning">Home</span></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,17 +11,38 @@
           <a class="nav-link active" aria-current="page" href="{% url 'shopp_list' %}"><span class="text-warning">list</span></a>
         </li>
       </ul>
-      <form class="d-flex" method="GET" action="{% url 'shopp_list' %}">
-        <div class="input-group">
-          <input class="form-control"
-                 type="text"
-                 placeholder="{% trans 'Search' %}"
-                 name="q"
-                 value="{{ request.GET.q }}"
-          >
-          <button class="btn btn-outline-danger" type="submit"><i class="bi bi-search"></i></button>
-        </div>
-      </form>
+      {% if user.is_authenticated %}
+         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+            <li>
+              <a class="nav-link">
+                {{user.username}}
+              </a>
+              <ul>
+                <li><a class="navbar-nav" href="#">Profile</a></li>
+                <li><a  class="navbar-nav" href="{% url 'logout' %}">logout</a></li>
+              </ul>
+            </li>
+         </ul>
+
+
+        <form class="d-flex" method="GET" action="{% url 'shopp_list' %}">
+          <div class="input-group">
+            <input class="form-control"
+                   type="text"
+                   placeholder="{% trans 'Search' %}"
+                   name="q"
+                   value="{{ request.GET.q }}"
+            >
+            <button class="btn btn-outline-danger" type="submit"><i class="bi bi-search"></i></button>
+          </div>
+        </form>
+      {% else %}
+        <a class="btn btn-outline-light" href="{% url 'login' %}">
+          {% trans 'login' %}
+        </a>
+      {% endif %}
     </div>
   </div>
 </nav>
+
